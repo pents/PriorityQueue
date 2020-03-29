@@ -1,4 +1,4 @@
-namespace PQ.Abstractions
+namespace Pents.PQ.Abstractions
 {
     public interface IPriorityQueue<T>
     {

@@ -1,8 +1,8 @@
 using System;
-using PQ.Abstractions;
-using PQ.Enums;
+using Pents.PQ.Abstractions;
+using Pents.PQ.Enums;
 
-namespace PQ
+namespace Pents.PQ
 {
     public class PriorityQueue<T> : IPriorityQueue<T>
     {

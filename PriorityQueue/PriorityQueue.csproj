@@ -4,7 +4,11 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <Title>C# simple PriorityQueue</Title>
         <Authors>Pent</Authors>
-        <Company />
+        <Company>Pents</Company>
+        <PackageId>Pents.PQ</PackageId>
+        <RepositoryUrl>https://github.com/pents/PriorityQueue</RepositoryUrl>
+        <Description>Simple C# Priorityqueue implementation</Description>
+        <PackageLicenseUrl>https://choosealicense.com/licenses/mit/</PackageLicenseUrl>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
