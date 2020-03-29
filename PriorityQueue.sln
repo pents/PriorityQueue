@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PriorityQueue", "PriorityQueue\PriorityQueue.csproj", "{2909F1DA-7793-4865-A7A2-E600B116AEFB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2909F1DA-7793-4865-A7A2-E600B116AEFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2909F1DA-7793-4865-A7A2-E600B116AEFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2909F1DA-7793-4865-A7A2-E600B116AEFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2909F1DA-7793-4865-A7A2-E600B116AEFB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
