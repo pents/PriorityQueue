@@ -1,4 +1,4 @@
-namespace PriorityQueue.Enums
+namespace PQ.Enums
 {
     public enum PriorityQueueDirection
     {
