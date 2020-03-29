@@ -1,7 +1,10 @@
-namespace PriorityQueue.Abstractions
+namespace PQ.Abstractions
 {
-    public interface IPriorityQueue
+    public interface IPriorityQueue<T>
     {
-        
+        bool IsEmpty();
+        void Insert(T item);
+        T Remove();
+        T Peek();
     }
 }
