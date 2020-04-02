@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
         <Title>C# simple PriorityQueue</Title>
         <Authors>Pent</Authors>
         <Company>Pents</Company>
@@ -9,6 +8,8 @@
         <RepositoryUrl>https://github.com/pents/PriorityQueue</RepositoryUrl>
         <Description>Simple C# Priorityqueue implementation</Description>
         <PackageLicenseUrl>https://choosealicense.com/licenses/mit/</PackageLicenseUrl>
+        <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+        <PackageVersion>1.0.3</PackageVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">

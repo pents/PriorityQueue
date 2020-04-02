@@ -4,18 +4,34 @@ using Pents.PQ.Enums;
 
 namespace Pents.PQ
 {
-    public class PriorityQueue<T> : IPriorityQueue<T>
+    public class PriorityQueue<T> : IPriorityQueue<T> where T: IComparable
     {
         private readonly PriorityQueueDirection _direction;
-        private readonly Func<T, int> _sortingRule;
-        private T _removeResult = default;
-        private T[] _collection = new T[0];
-        private int _lastIndex = -1;
-        
-        public PriorityQueue(Func<T, int> sortingRule, PriorityQueueDirection direction = PriorityQueueDirection.MIN)
+        private T _removeResult;
+        private T[] _collection;
+        private int _lastIndex;
+
+        public PriorityQueue(T[] collection, PriorityQueueDirection direction = PriorityQueueDirection.MIN)
         {
-            _sortingRule = sortingRule;
+            _collection = collection;
             _direction = direction;
+            _lastIndex = collection.Length - 1;
+            NormalizeDownwards(0);
+        }
+        
+        public PriorityQueue(PriorityQueueDirection direction = PriorityQueueDirection.MIN) 
+            : this(new T[0], direction)
+        {
+        }
+
+        protected internal void Sort()
+        {
+            while (_lastIndex > 0)
+            {
+                Swap(0, _lastIndex);
+                _lastIndex--;
+                NormalizeDownwards(0);    
+            }
         }
         
         public bool IsEmpty()
@@ -73,10 +89,8 @@ namespace Pents.PQ
                 var element = _collection[elementIndex];
 
                 var elementParent = _collection[elementParentIndex];
-
-                var elementWeight = _sortingRule(element);
-                var elementParentWeight = _sortingRule(elementParent);
-                if (!IsOkPlacement(elementWeight, elementParentWeight))
+                
+                if (!IsOkPlacement(element, elementParent))
                 {
                     Swap(elementIndex, elementParentIndex);
                     elementIndex = elementParentIndex;
@@ -89,15 +103,18 @@ namespace Pents.PQ
         }
         private void NormalizeDownwards(int parentIndex)
         {
+            if (_collection.Length == 0)
+                return;
+            
             while (true)
             {
                 var leftChildIndex = LeftIndex(parentIndex);
                 var rightChildIndex = RightIndex(parentIndex);
-                var parent = _sortingRule(_collection[parentIndex]);
+                var parent = _collection[parentIndex];
                 var childIndex = DirectionalOkChildIndex(leftChildIndex, rightChildIndex);
-                if (childIndex != int.MinValue)
+                if (childIndex != -1)
                 {
-                    var child = _sortingRule(_collection[childIndex]);
+                    var child = _collection[childIndex];
                     if (!IsOkPlacement(child, parent))
                     {
                         Swap(parentIndex, childIndex);
@@ -111,40 +128,51 @@ namespace Pents.PQ
         }
         private int DirectionalOkChildIndex(int leftChildIndex, int rightChildIndex)
         {
-            var leftChildValue = _lastIndex > leftChildIndex ? _sortingRule(_collection[leftChildIndex]) : int.MinValue;
-            var rightChildValue = _lastIndex > rightChildIndex ? _sortingRule(_collection[rightChildIndex]) : int.MinValue;
+            var leftChildExists = _lastIndex >= leftChildIndex;
+            var rightChildExists = _lastIndex >= rightChildIndex;
+
+            var leftChildValue = leftChildExists ? _collection[leftChildIndex] : default;
+            var rightChildValue = rightChildExists ? _collection[rightChildIndex] : default;
             
-            if (leftChildValue != int.MinValue && rightChildValue != int.MinValue)
+            if (leftChildExists && rightChildExists)
             {
-                return _direction switch
+                var comparer = leftChildValue.CompareTo(rightChildValue);
+                switch (_direction)
                 {
-                    PriorityQueueDirection.MIN => leftChildValue > rightChildValue ? rightChildIndex : leftChildIndex,
-                    PriorityQueueDirection.MAX => leftChildValue < rightChildValue ? leftChildIndex : rightChildIndex,
-                    _                          => throw new ArgumentOutOfRangeException(nameof(_direction))
-                };
+                    case PriorityQueueDirection.MIN:
+                        return comparer < 0 ? leftChildIndex : rightChildIndex;
+                    case PriorityQueueDirection.MAX:
+                        return comparer > 0 ? leftChildIndex : rightChildIndex;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(_direction));
+                }
             }
 
-            if (leftChildValue != int.MinValue && rightChildValue == int.MinValue)
+            if (leftChildExists)
             {
                 return leftChildIndex;
             }
 
-            if (rightChildValue != int.MinValue && leftChildValue == int.MinValue)
+            if (rightChildExists)
             {
                 return rightChildIndex;
             }
 
-            return int.MinValue;
+            return -1;
         }
-        private bool IsOkPlacement(int weightChild, int weightParent)
+        private bool IsOkPlacement(T weightChild, T weightParent)
         {
-            if (weightChild == weightParent) return true;
-            return _direction switch
+            var comparerResult = weightChild.CompareTo(weightParent);
+            if (comparerResult == 0) return true;
+            switch (_direction)
             {
-                PriorityQueueDirection.MIN => (weightParent < weightChild),
-                PriorityQueueDirection.MAX => (weightParent > weightChild),
-                _                          => throw new ArgumentException(nameof(_direction))
-            };
+                case PriorityQueueDirection.MAX:
+                    return comparerResult < 0;
+                case PriorityQueueDirection.MIN:
+                    return comparerResult > 0;
+                default:
+                    throw new ArgumentException(nameof(_direction));
+            }
         }
         private void Swap(int index1, int index2) => (_collection[index1], _collection[index2]) = (_collection[index2], _collection[index1]);
         private int ParentIndex(int itemIndex) => (itemIndex-1) / 2;
