@@ -38,7 +38,7 @@ or use it for sorting
 ```C#
 var array = new int[] {0, -9, 5, 2, 7, 1, 8};
 
-array.HeapSort();
+var sortedArray = array.HeapSort();
 
 // Output: -9 0 1 2 5 7 8
 
