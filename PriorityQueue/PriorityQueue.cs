@@ -4,34 +4,33 @@ using Pents.PQ.Enums;
 
 namespace Pents.PQ
 {
-    public class PriorityQueue<T> : IPriorityQueue<T> where T: IComparable
+     public class PriorityQueue<T> : IPriorityQueue<T> where T: IComparable
     {
         private readonly PriorityQueueDirection _direction;
         private T _removeResult;
         private T[] _collection;
         private int _lastIndex;
-
-        public PriorityQueue(T[] collection, PriorityQueueDirection direction = PriorityQueueDirection.MIN)
-        {
-            _collection = collection;
-            _direction = direction;
-            _lastIndex = collection.Length - 1;
-            NormalizeDownwards(0);
-        }
         
-        public PriorityQueue(PriorityQueueDirection direction = PriorityQueueDirection.MIN) 
-            : this(new T[0], direction)
+        public PriorityQueue(PriorityQueueDirection direction = PriorityQueueDirection.MIN)
         {
+            _collection = new T[0];
+            _lastIndex = -1;
+            _direction = direction;
         }
 
-        protected internal void Sort()
+        public T[] Sort()
         {
+            var tempIndex = _lastIndex+1;
             while (_lastIndex > 0)
             {
                 Swap(0, _lastIndex);
                 _lastIndex--;
                 NormalizeDownwards(0);    
             }
+
+            var result = new T[tempIndex];
+            Array.Copy(_collection, 0, result, 0, tempIndex);
+            return result;
         }
         
         public bool IsEmpty()
@@ -118,6 +117,7 @@ namespace Pents.PQ
                     if (!IsOkPlacement(child, parent))
                     {
                         Swap(parentIndex, childIndex);
+                        NormalizeUpwards(parentIndex, ParentIndex(parentIndex));
                         parentIndex = childIndex;
                         continue;
                     }
