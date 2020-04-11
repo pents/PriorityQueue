@@ -53,11 +53,16 @@ namespace Pents.PQ
 
         public T Remove()
         {
-            _removeResult = _collection[0];
-            Swap(0, _lastIndex);
-            _lastIndex--;
-            NormalizeDownwards(0);
-            return _removeResult;
+            if (!IsEmpty())
+            {
+                _removeResult = _collection[0];
+                Swap(0, _lastIndex);
+                _lastIndex--;
+                NormalizeDownwards(0);
+                return _removeResult;
+            }
+
+            throw new ArgumentException("Heap is empty");
         }
 
         public T Peek()
@@ -79,7 +84,7 @@ namespace Pents.PQ
         
         private void NormalizeUpwards(int elementIndex, int elementParentIndex)
         {
-            if (_lastIndex == 1)
+            if (_lastIndex == 0)
             {
                 return;
             }
