@@ -4,7 +4,7 @@ using Pents.PQ.Enums;
 
 namespace Pents.PQ
 {
-     public class PriorityQueue<T> : IPriorityQueue<T> where T: IComparable
+     public class PriorityQueue<T> : IPriorityQueue<T> where T: IComparable<T>
     {
         private readonly PriorityQueueDirection _direction;
         private T _removeResult;
