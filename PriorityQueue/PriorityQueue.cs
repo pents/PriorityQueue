@@ -57,6 +57,7 @@ namespace Pents.PQ
             {
                 _removeResult = _collection[0];
                 Swap(0, _lastIndex);
+                _collection[_lastIndex] = default;
                 _lastIndex--;
                 NormalizeDownwards(0);
                 return _removeResult;
